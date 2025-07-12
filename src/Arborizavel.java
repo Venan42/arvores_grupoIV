@@ -1,5 +1,5 @@
-public interface Arborizavel<Disciplina>{
-    void inserirDisciplina(Disciplina nova);
+public interface Arborizavel<T>{
+    void inserirDisciplina(T nova);
     void removerDisciplina(String codigo);
 
     Nodo buscarNodo(String codigo);
