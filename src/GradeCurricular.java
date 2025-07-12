@@ -1,6 +1,3 @@
-import java.util.Iterator;
-import java.util.List;
-
 public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
@@ -30,6 +27,24 @@ public class GradeCurricular<T> implements Arborizavel<T>{
             return nodo;
         for(Nodo<T> filho : nodo.getFilhos()){
             Nodo<T> aux = buscarNodoRec(codigo, filho);
+            if(aux != null)
+                return aux;
+        }
+        return null;
+    }
+
+    @Override
+    public Nodo<T> buscarNodo(String nome) {
+        return buscarNodoRec(nome, raiz);
+    }
+
+    private Nodo<T> buscarNodoRec(String nome, Nodo<T> nodo) {
+        if(nodo == null)
+            return null;
+        if (nome.trim().equalsIgnoreCase(((Disciplina)nodo.getDado()).getNome()))
+            return nodo;
+        for(Nodo<T> filho : nodo.getFilhos()){
+            Nodo<T> aux = buscarNodoRec(nome, filho);
             if(aux != null)
                 return aux;
         }
