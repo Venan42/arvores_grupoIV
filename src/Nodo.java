@@ -38,4 +38,8 @@ public class Nodo<T> {
     public void setFilho(int i, Nodo<T> nodo) {
         filhos.set(i, nodo);
     }
+
+    public void addFilho(Nodo<T> nodo){
+        filhos.add(nodo);
+    }
 }
