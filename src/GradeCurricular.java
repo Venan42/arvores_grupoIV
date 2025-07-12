@@ -24,15 +24,16 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     private Nodo<T> buscarNodoRec(int codigo, Nodo<T> nodo) {
-        if (codigo == ((Disciplina) raiz.getDado()).getCodigo()) {
+        if(nodo == null)
+            return null;
+        if (codigo == ((Disciplina) nodo.getDado()).getCodigo())
             return nodo;
+        for(Nodo<T> filho : nodo.getFilhos()){
+            Nodo<T> aux = buscarNodoRec(codigo, filho);
+            if(aux != null)
+                return aux;
         }
-        Nodo<T> resp = null;
-        List<Nodo<T>> auxFilhos = nodo.getFilhos();
-        for(Nodo<T> filho : auxFilhos){
-            resp = buscarNodoRec(codigo, filho);
-        }
-        return resp;
+        return null;
     }
 
     @Override
@@ -46,7 +47,19 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean contemDisciplina(String codigo) {
+    public boolean contemDisciplina(int codigo) {
+        return contemDisciplinaRec(codigo, raiz);
+    }
+
+    private boolean contemDisciplinaRec(int codigo, Nodo<T> nodo) {
+        if (nodo.getDado() != null && codigo == ((Disciplina) nodo.getDado()).getCodigo()) {
+            return true;
+        }
+        for (Nodo<T> filho : nodo.getFilhos()) {
+            if (contemDisciplinaRec(codigo, filho)) {
+                return true;
+            }
+        }
         return false;
     }
 
