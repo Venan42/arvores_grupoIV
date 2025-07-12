@@ -35,6 +35,10 @@ public class Nodo<T> {
         return filhos.get(i);
     }
 
+    public List<Nodo<T>> getFilhos() {
+        return filhos;
+    }
+
     public void setFilho(int i, Nodo<T> nodo) {
         filhos.set(i, nodo);
     }

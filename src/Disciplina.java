@@ -17,7 +17,7 @@ public class Disciplina {
         this.nome = nome;
     }
 
-    public static int getCodigo() {
+    public int getCodigo() {
         return codigo;
     }
 
