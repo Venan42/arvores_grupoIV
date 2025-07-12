@@ -11,7 +11,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public void removerDisciplina(String codigo) {
+    public void removerDisciplina(int codigo) {
 
     }
 
@@ -79,12 +79,12 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean removerNodo(String codigo, Nodo<T> atual, Nodo<T> pai) {
+    public boolean removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai) {
         return false;
     }
 
     @Override
-    public boolean vincularPreRequisito(String codigoPai, String codigoFilho) {
+    public boolean vincularPreRequisito(int codigoPai, int codigoFilho) {
         return false;
     }
 }
