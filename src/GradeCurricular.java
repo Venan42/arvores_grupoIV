@@ -10,7 +10,13 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public void inserirDisciplina(T nova) {
+        if (buscarNodo(((Disciplina) nova).getCodigo()) != null) {
+            throw new IllegalArgumentException("Disciplina já cadastrada!");
+        }
 
+        Nodo<T> novo = new Nodo<>(nova);
+        novo.setGenitor(raiz);
+        raiz.addFilho(novo);
     }
 
     @Override
