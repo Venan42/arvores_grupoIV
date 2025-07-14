@@ -53,7 +53,24 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public String exibirArvore(Nodo<T> atual, int nivel) {
-        return "";
+        if (atual == null || atual.getDado() == null) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("  ".repeat(nivel));
+
+        Disciplina d = (Disciplina) atual.getDado();
+        sb.append("[").append(d.getCodigo()).append("] ")
+                .append(d.getNome()).append(" (")
+                .append(d.getCreditos()).append(" créditos)\n");
+
+        for (Nodo<T> filho : atual.getFilhos()) {
+            sb.append(exibirArvore(filho, nivel + 1));
+        }
+
+        return sb.toString();
     }
 
     @Override
