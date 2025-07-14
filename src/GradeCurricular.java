@@ -1,3 +1,7 @@
+import exception.DisciplineNotFoundException;
+import exception.DisciplineWithoutParentException;
+import exception.RootRemovalException;
+
 public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
@@ -13,7 +17,27 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public void removerDisciplina(int codigo) {
+        if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
+            throw new RootRemovalException();
+        }
+        Nodo<T> alvo = buscarNodo(codigo);
 
+        if (alvo == null) {
+            throw new DisciplineNotFoundException(codigo);
+        }
+
+        Nodo<T> pai = alvo.getGenitor();
+        if (pai == null) {
+            throw new DisciplineWithoutParentException(codigo);
+        }
+
+        boolean sucesso = removerNodo(codigo, alvo, pai);
+
+        if (!sucesso) {
+            throw new RuntimeException("Falha inesperada ao remover a disciplina.");
+        }else{
+            System.out.println("Disciplina removida com sucesso.");
+        }
     }
 
     @Override
