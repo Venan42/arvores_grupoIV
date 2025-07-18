@@ -16,7 +16,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public void removerDisciplina(int codigo) {
+    public String removerDisciplina(int codigo) {
         if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
             throw new RootRemovalException();
         }
@@ -31,13 +31,14 @@ public class GradeCurricular<T> implements Arborizavel<T>{
             throw new DisciplineWithoutParentException(codigo);
         }
 
-        boolean sucesso = removerNodo(codigo, alvo, pai);
+       Nodo<T> subarvoreRemovida= removerNodo(codigo, alvo, pai);
 
-        if (!sucesso) {
+        if (subarvoreRemovida == null) {
             throw new RuntimeException("Falha inesperada ao remover a disciplina.");
-        }else{
-            System.out.println("Disciplina removida com sucesso.");
         }
+        return "✅ Disciplina removida com sucesso. Subárvore excluída:\n"
+                + exibirArvore(subarvoreRemovida, 0);
+
     }
 
     @Override
@@ -121,8 +122,8 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai) {
-        return false;
+    public Nodo<T> removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai) {
+        return null;
     }
 
     @Override
