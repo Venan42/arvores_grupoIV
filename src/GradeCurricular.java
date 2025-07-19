@@ -148,10 +148,10 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
         Nodo<T> cursor = pai;
         while (cursor != null) {
-        if (cursor == filho) {
-            return false;
-        }
-        cursor = cursor.getGenitor();
+            if (cursor == filho) {
+                return false;
+            }
+            cursor = cursor.getGenitor();
         }
 
         pai.addFilho(filho);
