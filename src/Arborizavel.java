@@ -3,7 +3,7 @@ public interface Arborizavel<T>{
 
     Nodo<T> buscarNodo(int codigo);
     Nodo<T> buscarNodo(String nome);
-    Nodo<T> removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai);
+    Nodo<T> removerNodo(Nodo<T> atual, Nodo<T> pai);
 
     String exibirArvore(Nodo<T> atual, int nivel);
     String visualizarArvore();
