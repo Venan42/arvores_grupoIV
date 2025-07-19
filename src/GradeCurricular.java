@@ -7,7 +7,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public void inserirDisciplina(T nova) {
-        if (buscarNodo(((Disciplina) nova).getCodigo()) != null) {
+        if (buscarNodo(((Disciplina) nova).getNome()) != null) {
             throw new IllegalArgumentException("Disciplina já cadastrada!");
         }
 
@@ -64,7 +64,9 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public String visualizarArvore() {
-        return "";
+        StringBuilder sb = new StringBuilder();
+        sb.append(exibirArvore(raiz, 0));
+        return sb.toString();
     }
 
     @Override
