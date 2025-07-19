@@ -16,7 +16,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public void removerDisciplina(int codigo) {
+    public String removerDisciplina(int codigo) {
         if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
             throw new RootRemovalException();
         }
@@ -31,13 +31,14 @@ public class GradeCurricular<T> implements Arborizavel<T>{
             throw new DisciplineWithoutParentException(codigo);
         }
 
-        boolean sucesso = removerNodo(codigo, alvo, pai);
+       Nodo<T> subarvoreRemovida= removerNodo(alvo, pai);
 
-        if (!sucesso) {
+        if (subarvoreRemovida == null) {
             throw new RuntimeException("Falha inesperada ao remover a disciplina.");
-        }else{
-            System.out.println("Disciplina removida com sucesso.");
         }
+        return "✅ Disciplina removida com sucesso. Subárvore excluída:\n"
+                + exibirArvore(subarvoreRemovida, 0);
+
     }
 
     @Override
@@ -121,12 +122,40 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai) {
-        return false;
+    public Nodo<T> removerNodo(Nodo<T> atual, Nodo<T> pai) {
+        boolean removido = pai.getFilhos().remove(atual);
+        if (removido) {
+            atual.setGenitor(null);
+            return atual;
+        }
+        return null;
     }
 
     @Override
     public boolean vincularPreRequisito(int codigoPai, int codigoFilho) {
-        return false;
+        if(codigoPai <= 0 || codigoFilho <= 0) 
+            return false;
+
+        Nodo<T> pai = buscarNodo(codigoPai);
+        Nodo<T> filho = buscarNodo(codigoFilho);
+
+        if (pai == null )
+            throw new DisciplineNotFoundException(codigoPai);
+        if(filho == null)
+            throw new DisciplineNotFoundException(codigoFilho);
+        if (filho.getGenitor() != null) 
+            return false;
+
+        Nodo<T> cursor = pai;
+        while (cursor != null) {
+            if (cursor == filho) {
+                return false;
+            }
+            cursor = cursor.getGenitor();
+        }
+
+        pai.addFilho(filho);
+        filho.setGenitor(pai);
+        return true;
     }
 }
