@@ -59,12 +59,12 @@ public class CurriculoAcademicoCLI {
                         break;
 
                     case 5:
+                        System.out.println(MostrarpreRequisitos());
+                        break;
+                    case 6:
                         System.out.print("Digite o código da disciplina: ");
                         int codigoBusca = Integer.parseInt(scanner.nextLine());
                         System.out.println(curriculo.buscarDisciplina(codigoBusca));
-                        break;
-                    case 6:
-                        System.out.println(MostrarpreRequisitos());
                         break;
                     case 0:
                         System.out.println("Saindo...");
@@ -75,11 +75,7 @@ public class CurriculoAcademicoCLI {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Digite um número!");
-            } catch (DisciplineNotFoundException e) {
-                System.out.println("Disciplina não encontrada!");
-            } catch (RootRemovalException e) {
-                System.out.println("Remoção de raiz inválida.");
-            } catch (DisciplineWithoutParentException e) {
+            } catch (DisciplineNotFoundException | RootRemovalException | DisciplineWithoutParentException e) {
                 System.out.println(e.getMessage());
             }
         } while (opcao != 0);
