@@ -22,6 +22,14 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
+    public Disciplina buscarDisciplina(int codigo) {
+        Nodo<T> nodo = buscarNodoRec(codigo, raiz);
+        if(nodo == null)
+            throw new DisciplineNotFoundException("Disciplina não encontrada.");
+        return (Disciplina) nodo.getDado();
+    }
+
+    @Override
     public String removerDisciplina(int codigo) {
         if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
             throw new RootRemovalException();

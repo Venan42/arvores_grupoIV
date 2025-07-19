@@ -1,5 +1,6 @@
 public interface Arborizavel<T>{
     void inserirDisciplina(T nova);
+    Disciplina buscarDisciplina(int codigo);
 
     Nodo<T> buscarNodo(int codigo);
     Nodo<T> buscarNodo(String nome);

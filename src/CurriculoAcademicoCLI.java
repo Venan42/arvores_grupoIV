@@ -60,7 +60,7 @@ public class CurriculoAcademicoCLI {
 
                     case 5:
                         System.out.print("Digite o código da disciplina: ");
-                        String codigoBusca = scanner.nextLine();
+                        int codigoBusca = Integer.parseInt(scanner.nextLine());
                         System.out.println(curriculo.buscarDisciplina(codigoBusca));
                         break;
                     case 6:
@@ -80,7 +80,7 @@ public class CurriculoAcademicoCLI {
             } catch (RootRemovalException e) {
                 System.out.println("Remoção de raiz inválida.");
             } catch (DisciplineWithoutParentException e) {
-                System.out.println();
+                System.out.println(e.getMessage());
             }
         } while (opcao != 0);
 
