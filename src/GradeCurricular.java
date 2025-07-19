@@ -1,8 +1,13 @@
+import exception.DisciplineNotFoundException;
+import exception.DisciplineWithoutParentException;
+import exception.RootRemovalException;
+
 public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
     public GradeCurricular(){
-        raiz = new Nodo<>();
+        Disciplina curso= new Disciplina("Bacharelado em Sistemas de Informação", 0);
+        raiz = new Nodo<>((T)curso);
     }
 
     @Override
@@ -17,7 +22,28 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public void removerDisciplina(int codigo) {
+    public String removerDisciplina(int codigo) {
+        if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
+            throw new RootRemovalException();
+        }
+        Nodo<T> alvo = buscarNodo(codigo);
+
+        if (alvo == null) {
+            throw new DisciplineNotFoundException(codigo);
+        }
+
+        Nodo<T> pai = alvo.getGenitor();
+        if (pai == null) {
+            throw new DisciplineWithoutParentException(codigo);
+        }
+
+       Nodo<T> subarvoreRemovida= removerNodo(alvo, pai);
+
+        if (subarvoreRemovida == null) {
+            throw new RuntimeException("Falha inesperada ao remover a disciplina.");
+        }
+        return "✅ Disciplina removida com sucesso. Subárvore excluída:\n"
+                + exibirArvore(subarvoreRemovida, 0);
 
     }
 
@@ -59,7 +85,24 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public String exibirArvore(Nodo<T> atual, int nivel) {
-        return "";
+        if (atual == null || atual.getDado() == null) {
+            return "";
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("  ".repeat(nivel));
+
+        Disciplina d = (Disciplina) atual.getDado();
+        sb.append("[").append(d.getCodigo()).append("] ")
+                .append(d.getNome()).append(" (")
+                .append(d.getCreditos()).append(" créditos)\n");
+
+        for (Nodo<T> filho : atual.getFilhos()) {
+            sb.append(exibirArvore(filho, nivel + 1));
+        }
+
+        return sb.toString();
     }
 
     @Override
@@ -87,12 +130,40 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean removerNodo(int codigo, Nodo<T> atual, Nodo<T> pai) {
-        return false;
+    public Nodo<T> removerNodo(Nodo<T> atual, Nodo<T> pai) {
+        boolean removido = pai.getFilhos().remove(atual);
+        if (removido) {
+            atual.setGenitor(null);
+            return atual;
+        }
+        return null;
     }
 
     @Override
     public boolean vincularPreRequisito(int codigoPai, int codigoFilho) {
-        return false;
+        if(codigoPai <= 0 || codigoFilho <= 0) 
+            return false;
+
+        Nodo<T> pai = buscarNodo(codigoPai);
+        Nodo<T> filho = buscarNodo(codigoFilho);
+
+        if (pai == null )
+            throw new DisciplineNotFoundException(codigoPai);
+        if(filho == null)
+            throw new DisciplineNotFoundException(codigoFilho);
+        if (filho.getGenitor() != null) 
+            return false;
+
+        Nodo<T> cursor = pai;
+        while (cursor != null) {
+            if (cursor == filho) {
+                return false;
+            }
+            cursor = cursor.getGenitor();
+        }
+
+        pai.addFilho(filho);
+        filho.setGenitor(pai);
+        return true;
     }
 }
