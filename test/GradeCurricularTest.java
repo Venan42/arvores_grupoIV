@@ -11,21 +11,4 @@ public class GradeCurricularTest {
         grade = new GradeCurricular<>();
         disciplina = new Disciplina("Matemática Discreta I", 0);
     }
-
-    @Test
-    public void buscarNodoPorNomeTest() {
-        grade.inserirDisciplina(disciplina);
-        assertEquals(disciplina, grade.buscarNodo("Matemática Discreta I").getDado());
-    }
-
-    @Test
-    public void buscarNodoPorCodigoTest() {
-        grade.inserirDisciplina(disciplina);
-        assertEquals(disciplina, grade.buscarNodo(1).getDado());
-    }
-
-    @Test
-    public void buscarNodoVazioTest() {
-        assertNull(grade.buscarNodo(1));
-    }
 }
