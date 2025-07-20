@@ -5,14 +5,14 @@ import exception.RootRemovalException;
 import java.util.List;
 
 /**
- * Código referente a implementação de um Currículo
- * Acadêmico com Pré-requisitos utilizando Árvores N-ária.
+ * Código referente a implementação de um Currículo Acadêmico com Pré-requisitos
+ * utilizando de uma Árvore N-ária.
  * 
  * @author Gabryelle Beatriz Duarte Moraes
  * @author Vinícius Nunes de Andrade
  * @author Maria Eduarda Santos Campos
  * @author Kaique Silva Souza
- * @version 2.0
+ * @version 3.0
  * @since 2025-07-11
  */
 public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
@@ -30,7 +30,7 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
     }
 
     /**
-     * Insere uma disciplina na raiz da árvore/no curso.
+     * Insere uma disciplina na raiz da árvore, ou seja, no curso.
      * 
      * @param nova A disciplina a ser inserida.
      * @throws IllegalArgumentException Se a disciplina já foi inserida.
