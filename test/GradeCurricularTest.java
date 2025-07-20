@@ -34,6 +34,34 @@ public class GradeCurricularTest {
     }
 
     @Test
+    void testBuscarDisciplinaInexistente(){
+        //Criando as disciplinas
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina poo = new Disciplina("POO001", "Programação Orientada a Objetos", 4);
+        Disciplina bd = new Disciplina("BD001", "Banco de Dados", 4);
+        Disciplina es = new Disciplina("ES001", "Estrutura de Dados", 4);
+
+        //Inserindo as disciplinas
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(poo);
+        grade.inserirDisciplina(bd);
+        grade.inserirDisciplina(es);
+
+        //Vinculando os pré-requisitos
+        grade.vincularPreRequisito("BSI", "LP001"); //LP001 depende de BSI
+        grade.vincularPreRequisito("BSI", "POO001"); //POO001 depende de BSI
+        grade.vincularPreRequisito("POO001", "BD001"); //BD001 depende de POO001
+        grade.vincularPreRequisito("LP001", "ES001"); //ES001 depende de LP001
+
+        //Chama o método e testa
+         DisciplineNotFoundException thrown = assertThrows(
+            DisciplineNotFoundException.class, // Esperamos que esta exceção seja lançada
+            () -> grade.buscarDisciplina("SO001"), // Código que tentamos executar
+            "Deve lançar DisciplineNotFoundException para disciplina inexistente." // Mensagem se o teste falhar
+        );
+    }
+
+    @Test
     void testVisualizarArvoreComMultiplosNiveis(){
         //Criando as disciplinas
         Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
