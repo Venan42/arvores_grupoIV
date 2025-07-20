@@ -26,7 +26,7 @@ public class GradeCurricularTest {
      */
     @BeforeEach
     public void setUp() {
-        grade = new GradeCurricular<>();
+        grade = new GradeCurricular<>("BSI", "Bacharelado em Sistemas de Informação");
         disciplina = new Disciplina("MDI","Matemática Discreta I", 0);
     }
 

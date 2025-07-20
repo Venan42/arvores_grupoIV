@@ -7,8 +7,8 @@ import java.util.List;
 public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
-    public GradeCurricular(){
-        Disciplina curso= new Disciplina("BSI", "Bacharelado em Sistemas de Informação", 0);
+    public GradeCurricular(String sigla, String nomeCurso){
+        Disciplina curso= new Disciplina(sigla, nomeCurso, 0);
         raiz = new Nodo<>((T)curso);
     }
 
