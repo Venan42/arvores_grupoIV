@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import exception.*;
+
 public class GradeCurricularTest {
     private GradeCurricular<Disciplina> grade;
     private Disciplina disciplina;
@@ -10,6 +12,25 @@ public class GradeCurricularTest {
     public void setUp() {
         grade = new GradeCurricular<>();
         disciplina = new Disciplina("MDI","Matemática Discreta I", 0);
+    }
+
+    @Test
+    void testBuscarDisciplinaExistente(){
+        //Cria as disciplinas
+        Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
+        Disciplina d2 = new Disciplina("LP001", "Lógica de Programação I", 4);
+
+        //Inserindo na árvore
+        grade.inserirDisciplina(d1);
+        grade.inserirDisciplina(d2);
+
+        //Executando o buscarDisciplina()
+        Disciplina disciplinaEncontrada = grade.buscarDisciplina("ED001");
+
+        //Verificação do retorno
+        assertNotNull(disciplinaEncontrada, "A disciplina ED001 deve ser encontrada.");
+        assertEquals("ED001", disciplinaEncontrada.getCodigo(), "O código da disciplina encontrada deve ser LP001.");
+        assertEquals("Estrutura de Dados I", disciplinaEncontrada.getNome(), "O nome da disciplina encontrada deve ser 'Estrutura de Dados I'.");
     }
 
     @Test
