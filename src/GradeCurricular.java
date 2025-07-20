@@ -150,7 +150,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean vincularPreRequisito(int codigoPai, int codigoFilho) {
+    public boolean vincularPreRequisito(String codigoPai, String codigoFilho) {
         Nodo<T> pai = buscarNodo(codigoPai);
         Nodo<T> filho = buscarNodo(codigoFilho);
         
