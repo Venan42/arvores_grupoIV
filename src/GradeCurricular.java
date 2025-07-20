@@ -2,7 +2,9 @@ import exception.DisciplineNotFoundException;
 import exception.DisciplineWithoutParentException;
 import exception.RootRemovalException;
 
-public class GradeCurricular<T> implements Arborizavel<T>{
+import java.util.List;
+
+public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
     public GradeCurricular(){
@@ -12,7 +14,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public void inserirDisciplina(T nova) {
-        if (buscarNodo(((Disciplina) nova).getNome()) != null) {
+        if (buscarNodo((nova).getNome()) != null) {
             throw new IllegalArgumentException("Disciplina já cadastrada!");
         }
 
@@ -31,7 +33,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public String removerDisciplina(String codigo) {
-        if (((Disciplina) raiz.getDado()).getCodigo().equals(codigo)) {
+        if ((raiz.getDado()).getCodigo().equals(codigo)) {
             throw new RootRemovalException();
         }
         Nodo<T> alvo = buscarNodo(codigo);
@@ -64,10 +66,10 @@ public class GradeCurricular<T> implements Arborizavel<T>{
         if (nodo.getGenitor() == null || nodo.getGenitor() == raiz) {
             return "Essa disciplina não possui um Pré-Requisito.";
         }
-        StringBuilder sb = new StringBuilder(((Disciplina) nodo.getDado()).getNome());
+        StringBuilder sb = new StringBuilder((nodo.getDado()).getNome());
         Nodo<T> nodoAtual = nodo.getGenitor();
         while (nodoAtual != null && nodoAtual != raiz) {
-            Disciplina disciplinaPai = (Disciplina) nodoAtual.getDado();
+            Disciplina disciplinaPai = nodoAtual.getDado();
             sb.insert(0, disciplinaPai.getNome() + " --> ");
             nodoAtual = nodoAtual.getGenitor();
         }
@@ -83,7 +85,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> buscarNodoRec(String codigo, Nodo<T> nodo) {
         if(nodo == null)
             return null;
-        if (((Disciplina) nodo.getDado()).getCodigo().equalsIgnoreCase(codigo))
+        if ((nodo.getDado()).getCodigo().equalsIgnoreCase(codigo))
             return nodo;
         for(Nodo<T> filho : nodo.getFilhos()){
             Nodo<T> aux = buscarNodoRec(codigo, filho);
@@ -101,15 +103,20 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("  ".repeat(nivel));
+        String prefixo = "│   ".repeat(Math.max(0, nivel - 1));
+        if (nivel > 0) {
+            prefixo += "├── ";
+        }
 
-        Disciplina d = (Disciplina) atual.getDado();
-        sb.append("[").append(d.getCodigo()).append("] ")
-                .append(d.getNome()).append(" (")
-                .append(d.getCreditos()).append(" créditos)\n");
+        Disciplina d = atual.getDado();
+        sb.append(prefixo)
+                .append("📁 [").append(d.getCodigo()).append("] ")
+                .append(d.getNome()).append("\n");
 
-        for (Nodo<T> filho : atual.getFilhos()) {
-            sb.append(exibirArvore(filho, nivel + 1));
+        // Recursão nos filhos
+        List<Nodo<T>> filhos = atual.getFilhos();
+        for (int i = 0; i < filhos.size(); i++) {
+            sb.append(exibirArvore(filhos.get(i), nivel + 1));
         }
 
         return sb.toString();
@@ -128,7 +135,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     private boolean contemDisciplinaRec(String codigo, Nodo<T> nodo) {
-        if (nodo.getDado() != null && ((Disciplina) nodo.getDado()).getCodigo().equalsIgnoreCase(codigo)) {
+        if (nodo.getDado() != null && (nodo.getDado()).getCodigo().equalsIgnoreCase(codigo)) {
             return true;
         }
         for (Nodo<T> filho : nodo.getFilhos()) {
