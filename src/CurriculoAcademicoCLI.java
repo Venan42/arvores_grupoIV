@@ -41,7 +41,7 @@ public class CurriculoAcademicoCLI {
                     case 2:
                         System.out.print("Código da disciplina a remover: ");
                         String codRemover = scanner.nextLine();
-                        curriculo.removerDisciplina(codRemover);
+                        System.out.println(curriculo.removerDisciplina(codRemover));
                         break;
 
                     case 3:
