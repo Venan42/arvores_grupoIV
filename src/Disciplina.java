@@ -1,10 +1,10 @@
 public class Disciplina {
     private String nome;
-    private static int codigo = 1;
+    private String codigo;
     private int creditos;
 
-    public Disciplina(String nome, int creditos) {
-        codigo++;
+    public Disciplina(String codigo, String nome, int creditos) {
+        this.codigo = codigo;
         this.nome = nome;
         this.creditos = creditos;
     }
@@ -17,19 +17,19 @@ public class Disciplina {
         this.nome = nome;
     }
 
-    public int getCodigo() {
-        return codigo;
-    }
-
-    public static void setCodigo(int codigo) {
-        Disciplina.codigo = codigo;
-    }
-
     public int getCreditos() {
         return creditos;
     }
 
     public void setCreditos(int creditos) {
         this.creditos = creditos;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 }
