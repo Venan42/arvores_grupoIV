@@ -6,7 +6,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
     public GradeCurricular(){
-        Disciplina curso= new Disciplina("Bacharelado em Sistemas de Informação", 0);
+        Disciplina curso= new Disciplina("BSI", "Bacharelado em Sistemas de Informação", 0);
         raiz = new Nodo<>((T)curso);
     }
 
