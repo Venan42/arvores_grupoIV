@@ -4,16 +4,36 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import exception.*;
 
+/**
+ * Classe de testes para a funcionalidade da {@link GradeCurricular}.
+ * Garante que os métodos de manipulação da grade curricular funcionam como esperado.
+ */
 public class GradeCurricularTest {
+    /**
+     * Instância da {@link GradeCurricular} para ser testada.
+     * Uma nova instância é criada antes de cada método de teste.
+     */
     private GradeCurricular<Disciplina> grade;
+
+     /**
+     * Instância de uma {@link Disciplina} básica para uso em testes, se necessário.
+     */
     private Disciplina disciplina;
 
+    /**
+     * Configura o ambiente de teste antes de cada método de teste ser executado.
+     * Inicializa uma nova {@link GradeCurricular} e uma {@link Disciplina} padrão.
+     */
     @BeforeEach
     public void setUp() {
         grade = new GradeCurricular<>();
         disciplina = new Disciplina("MDI","Matemática Discreta I", 0);
     }
 
+    /**
+     * Testa a inserção de uma disciplina na grade curricular.
+     * Verifica se a disciplina inserida está presente na grade.
+     */
     @Test
     void testInserirDisciplina() {
         // Inserindo disciplina
@@ -22,6 +42,10 @@ public class GradeCurricularTest {
         assertTrue(grade.contemDisciplina("ED001"), "A disciplina ED001 deve estar presente na grade.");
     }
 
+    /**
+     * Testa se o método de inserção de disciplina lança uma {@link IllegalArgumentException}
+     * quando uma disciplina com código duplicado é inserida.
+     */
     @Test
     void testInserirDisciplinaDuplicadaLancaExcecao() {
         // Inserindo disciplina
