@@ -188,4 +188,29 @@ public class GradeCurricularTest {
         assertEquals("Banco de Dados", nodoBD.getDado().getNome(), 
                      "O nome do dado no nó BD001 deve ser 'Banco de Dados'.");
     }
+    
+    @Test
+    void testBuscarNodoInexistente() {
+        //Cria as disciplinas
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina poo = new Disciplina("POO001", "Programação Orientada a Objetos", 4);
+        Disciplina bd = new Disciplina("BD001", "Banco de Dados", 4);
+        
+        //Insere as disciplinas
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(poo);
+        grade.inserirDisciplina(bd);
+
+        //Vinculando para criar a estrutura da árvore
+        grade.vincularPreRequisito("BSI", "LP001");
+        grade.vincularPreRequisito("BSI", "POO001");
+        grade.vincularPreRequisito("POO001", "BD001");
+
+        //Testa o método e o lançamento da exceção
+        DisciplineNotFoundException thrown = assertThrows(
+            DisciplineNotFoundException.class, // Esperamos que esta exceção seja lançada
+            () -> grade.buscarDisciplina("DUMMY001"), // Código que tentamos executar
+            "Deve lançar DisciplineNotFoundException para disciplina inexistente." // Mensagem se o teste falhar
+        );
+    }
 }
