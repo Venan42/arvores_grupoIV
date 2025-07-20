@@ -151,18 +151,19 @@ public class GradeCurricular<T> implements Arborizavel<T>{
 
     @Override
     public boolean vincularPreRequisito(int codigoPai, int codigoFilho) {
-        if(codigoPai <= 0 || codigoFilho <= 0) 
-            return false;
-
         Nodo<T> pai = buscarNodo(codigoPai);
         Nodo<T> filho = buscarNodo(codigoFilho);
-
-        if (pai == null )
+        
+        if (pai == null) {
             throw new DisciplineNotFoundException(codigoPai);
-        if(filho == null)
+        }
+        if (filho == null) {
             throw new DisciplineNotFoundException(codigoFilho);
-        if (filho.getGenitor() != null) 
-            return false;
+        }
+
+        if (filho.getGenitor() != null) {
+            filho.getGenitor().getFilhos().remove(filho);
+        }
 
         Nodo<T> cursor = pai;
         while (cursor != null) {
