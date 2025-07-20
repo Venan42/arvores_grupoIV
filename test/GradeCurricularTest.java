@@ -54,7 +54,7 @@ public class GradeCurricularTest {
         grade.vincularPreRequisito("LP001", "ES001"); //ES001 depende de LP001
 
         //Chama o método e testa
-         DisciplineNotFoundException thrown = assertThrows(
+        DisciplineNotFoundException thrown = assertThrows(
             DisciplineNotFoundException.class, // Esperamos que esta exceção seja lançada
             () -> grade.buscarDisciplina("SO001"), // Código que tentamos executar
             "Deve lançar DisciplineNotFoundException para disciplina inexistente." // Mensagem se o teste falhar
@@ -94,5 +94,17 @@ public class GradeCurricularTest {
 
         //Comparando a impressão com a saida esperada
         assertEquals(saidaEsperada, stringArvore, "A visualização da árvore não corresponde ao formato esperado.");
+    }
+
+    @Test
+    void testBuscarNodoExistenteNaRaiz() {
+        //Busca a disciplina raiz
+        Nodo<Disciplina> nodoEncontrado = grade.buscarNodo("BSI");
+
+        //Verificações
+        assertNotNull(nodoEncontrado, "O nó da disciplina raiz 'BSI' deve ser encontrado.");
+        assertEquals("BSI", nodoEncontrado.getDado().getCodigo(), "O código do dado no nó encontrado deve ser 'BSI'.");
+        assertEquals("Bacharelado em Sistemas de Informação", nodoEncontrado.getDado().getNome(), 
+                     "O nome do dado no nó encontrado deve ser 'Bacharelado em Sistemas de Informação'.");
     }
 }
