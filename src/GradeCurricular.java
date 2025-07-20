@@ -52,7 +52,7 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         if (subarvoreRemovida == null) {
             throw new RuntimeException("Falha inesperada ao remover a disciplina.");
         }
-        return "✅ Disciplina removida com sucesso. Subárvore excluída:\n"
+        return "Disciplina removida com sucesso. Subárvore excluída:\n"
                 + exibirArvore(subarvoreRemovida, 0);
 
     }
@@ -110,7 +110,7 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
 
         Disciplina d = atual.getDado();
         sb.append(prefixo)
-                .append("📁 [").append(d.getCodigo()).append("] ")
+                .append("[").append(d.getCodigo()).append("] ")
                 .append(d.getNome()).append("\n");
 
         // Recursão nos filhos
