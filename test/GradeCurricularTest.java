@@ -9,6 +9,6 @@ public class GradeCurricularTest {
     @Before
     public void setUp() {
         grade = new GradeCurricular<>();
-        disciplina = new Disciplina("Matemática Discreta I", 0);
+        disciplina = new Disciplina("MDI","Matemática Discreta I", 0);
     }
 }

@@ -83,7 +83,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     private Nodo<T> buscarNodoRec(String codigo, Nodo<T> nodo) {
         if(nodo == null)
             return null;
-        if (codigo == ((Disciplina) nodo.getDado()).getCodigo())
+        if (((Disciplina) nodo.getDado()).getCodigo().equalsIgnoreCase(codigo))
             return nodo;
         for(Nodo<T> filho : nodo.getFilhos()){
             Nodo<T> aux = buscarNodoRec(codigo, filho);
