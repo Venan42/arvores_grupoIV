@@ -119,7 +119,7 @@ public class GradeCurricularTest {
      * Verifica se a disciplina não está mais presente e se a mensagem de sucesso é retornada.
      */
     @Test
-    void testRemoverDisciplinaComSucesso() {
+    void testRemoverDisciplina() {
         // Inserindo disciplina
         Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
         grade.inserirDisciplina(d1);
@@ -161,6 +161,45 @@ public class GradeCurricularTest {
      * Testa a visualização da árvore de disciplinas com múltiplos níveis,
      * verificando se a saída formatada corresponde ao esperado.
      */
+    @Test
+    void testRemoverDisciplinaSemPaiLancaExcecao() {
+        // Cria disciplina órfã não vinculada à árvore
+        Disciplina orfa = new Disciplina("ORFA", "Órfã", 2);
+        Nodo<Disciplina> nodoOrfa = new Nodo<>(orfa);
+        // Força a inserção simulando um nó sem pai
+        // Adiciona na árvore para que buscarNodo funcione
+        grade.buscarNodo("BSI").addFilho(nodoOrfa);
+        // Remove o genitor
+        nodoOrfa.setGenitor(null);
+        DisciplineWithoutParentException thrown = assertThrows(
+            DisciplineWithoutParentException.class,
+            () -> grade.removerDisciplina("ORFA"),
+            "Deve lançar DisciplineWithoutParentException para disciplina sem pai."
+        );
+    }
+
+    @Test
+    void testRemoverDisciplinaComFilhosRemoveSubarvore() {
+        // Inserindo as disciplinas
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina es = new Disciplina("ES001", "Estrutura de Dados", 4);
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(es);
+        // Estrutura de Dados é filha de Lógica de Programação
+        grade.vincularPreRequisito("LP001", "ES001");
+        grade.vincularPreRequisito("BSI", "LP001");
+
+        // Remove Lógica de Programação que tem Estrutura de Dados como filha
+        String resultado = grade.removerDisciplina("LP001");
+
+        // Verifica que ambos foram removidos
+        assertFalse(grade.contemDisciplina("LP001"), "LP001 deve ter sido removida.");
+        assertFalse(grade.contemDisciplina("ES001"), "ES001 (filha) também deve ter sido removida.");
+        assertTrue(resultado.contains("Disciplina removida com sucesso"), "Mensagem de sucesso esperada.");
+        assertTrue(resultado.contains("Lógica de Programação"), "A subárvore removida deve ser exibida.");
+        assertTrue(resultado.contains("Estrutura de Dados"), "A subárvore removida deve ser exibida.");
+    }
+
     @Test
     void testVisualizarArvoreComMultiplosNiveis(){
         //Criando as disciplinas
@@ -245,6 +284,60 @@ public class GradeCurricularTest {
         assertNotNull(nodoBD, "O nó da disciplina 'BD001' deve ser encontrado.");
         assertEquals("Banco de Dados", nodoBD.getDado().getNome(), 
                      "O nome do dado no nó BD001 deve ser 'Banco de Dados'.");
+    }
+
+    @Test
+    void testVincularPreRequisitoPaiInexistenteLancaExcecao() {
+        Disciplina filho = new Disciplina("ED001", "Estrutura de Dados", 4);
+        grade.inserirDisciplina(filho);
+        DisciplineNotFoundException thrown = assertThrows(
+            DisciplineNotFoundException.class,
+            () -> grade.vincularPreRequisito("INEXISTENTE", "ED001"),
+            "Deve lançar DisciplineNotFoundException para pai inexistente."
+        );
+    }
+
+    @Test
+    void testVincularPreRequisitoFilhoInexistenteLancaExcecao() {
+        Disciplina pai = new Disciplina("LP001", "Lógica de Programação", 4);
+        grade.inserirDisciplina(pai);
+        DisciplineNotFoundException thrown = assertThrows(
+            DisciplineNotFoundException.class,
+            () -> grade.vincularPreRequisito("LP001", "INEXISTENTE"),
+            "Deve lançar DisciplineNotFoundException para filho inexistente."
+        );
+    }
+
+    @Test
+    void testVincularPreRequisitoCriaCicloRetornaFalse() {
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina es = new Disciplina("ES001", "Estrutura de Dados", 4);
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(es);
+        grade.vincularPreRequisito("LP001", "ES001");
+        // Tentar fazer Lógica de Programação depender de Estrutura de Dados
+        boolean resultado = grade.vincularPreRequisito("ES001", "LP001");
+        assertFalse(resultado, "Não deve permitir criar ciclo na árvore.");
+    }
+
+    @Test
+    void testVincularPreRequisitoMudaGenitorCorretamente() {
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina es = new Disciplina("ES001", "Estrutura de Dados", 4);
+        Disciplina bd = new Disciplina("BD001", "Banco de Dados", 4);
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(es);
+        grade.inserirDisciplina(bd);
+
+        grade.vincularPreRequisito("LP001", "ES001");
+        grade.vincularPreRequisito("BSI", "LP001");
+        grade.vincularPreRequisito("BSI", "BD001");
+
+        // Agora, muda o genitor de Estrutura de Dado para Banco de Dados
+        boolean resultado = grade.vincularPreRequisito("BD001", "ES001");
+        assertTrue(resultado, "A mudança de genitor deve ser permitida.");
+        Nodo<Disciplina> nodoES = grade.buscarNodo("ES001");
+        assertEquals("BD001", nodoES.getGenitor().getDado().getCodigo(), "O novo genitor de ES001 deve ser BD001.");
     }
     
     /**
