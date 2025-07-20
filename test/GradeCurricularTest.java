@@ -128,4 +128,35 @@ public class GradeCurricularTest {
         assertEquals("Bacharelado em Sistemas de Informação", nodoEncontrado.getDado().getNome(), 
                      "O nome do dado no nó encontrado deve ser 'Bacharelado em Sistemas de Informação'.");
     }
+
+    @Test
+    void testBuscarNodoExistenteNaoRaiz() {
+        //Cria as disciplinas
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina poo = new Disciplina("POO001", "Programação Orientada a Objetos", 4);
+        Disciplina bd = new Disciplina("BD001", "Banco de Dados", 4);
+        
+        //Insere as disciplinas
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(poo);
+        grade.inserirDisciplina(bd);
+
+        //Vinculando para criar a estrutura da árvore
+        grade.vincularPreRequisito("BSI", "LP001");
+        grade.vincularPreRequisito("BSI", "POO001");
+        grade.vincularPreRequisito("POO001", "BD001");
+
+        //Testa o método
+        Nodo<Disciplina> nodoLP = grade.buscarNodo("LP001");
+        Nodo<Disciplina> nodoBD = grade.buscarNodo("BD001");
+
+        //Resultados do teste
+        assertNotNull(nodoLP, "O nó da disciplina 'LP001' deve ser encontrado.");
+        assertEquals("Lógica de Programação", nodoLP.getDado().getNome(), 
+                     "O nome do dado no nó LP001 deve ser 'Lógica de Programação'.");
+
+        assertNotNull(nodoBD, "O nó da disciplina 'BD001' deve ser encontrado.");
+        assertEquals("Banco de Dados", nodoBD.getDado().getNome(), 
+                     "O nome do dado no nó BD001 deve ser 'Banco de Dados'.");
+    }
 }
