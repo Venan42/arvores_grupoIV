@@ -2,6 +2,8 @@ import exception.DisciplineNotFoundException;
 import exception.DisciplineWithoutParentException;
 import exception.RootRemovalException;
 
+import java.util.List;
+
 public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
@@ -101,15 +103,21 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
 
         StringBuilder sb = new StringBuilder();
 
-        sb.append("  ".repeat(nivel));
+        // Prefixo para o nó atual
+        String prefixo = "│   ".repeat(Math.max(0, nivel - 1));
+        if (nivel > 0) {
+            prefixo += "├── ";
+        }
 
         Disciplina d = (Disciplina) atual.getDado();
-        sb.append("[").append(d.getCodigo()).append("] ")
-                .append(d.getNome()).append(" (")
-                .append(d.getCreditos()).append(" créditos)\n");
+        sb.append(prefixo)
+                .append("📁 [").append(d.getCodigo()).append("] ")
+                .append(d.getNome()).append("\n");
 
-        for (Nodo<T> filho : atual.getFilhos()) {
-            sb.append(exibirArvore(filho, nivel + 1));
+        // Recursão nos filhos
+        List<Nodo<T>> filhos = atual.getFilhos();
+        for (int i = 0; i < filhos.size(); i++) {
+            sb.append(exibirArvore(filhos.get(i), nivel + 1));
         }
 
         return sb.toString();
