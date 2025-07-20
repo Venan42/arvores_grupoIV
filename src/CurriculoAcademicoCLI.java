@@ -32,24 +32,26 @@ public class CurriculoAcademicoCLI {
                     case 1:
                         System.out.print("Nome: ");
                         String nome = scanner.nextLine();
+                        System.out.print("Código: ");
+                        String codigo = scanner.nextLine();
                         System.out.print("Créditos da disciplina: ");
                         int creditos = Integer.parseInt(scanner.nextLine());
-                        Disciplina nova = new Disciplina(nome, creditos);
+                        Disciplina nova = new Disciplina(codigo, nome, creditos);
                         curriculo.inserirDisciplina(nova);
 
                         break;
 
                     case 2:
                         System.out.print("Código da disciplina a remover: ");
-                        int codRemover = Integer.parseInt(scanner.nextLine());
+                        String codRemover = scanner.nextLine();
                         curriculo.removerDisciplina(codRemover);
                         break;
 
                     case 3:
                         System.out.print("Código da disciplina pré-requisito: ");
-                        int codPai = Integer.parseInt(scanner.nextLine());
+                        String codPai = scanner.nextLine();
                         System.out.print("Código da disciplina dependente: ");
-                        int codFilho = Integer.parseInt(scanner.nextLine());
+                        String codFilho = scanner.nextLine();
                         boolean vinculado = curriculo.vincularPreRequisito(codPai, codFilho);
                         System.out.println("Vinculado? " + vinculado);
                         break;
@@ -60,13 +62,13 @@ public class CurriculoAcademicoCLI {
 
                     case 5:
                         System.out.print("Digite o código da disciplina: ");
-                        int codDisciplina = Integer.parseInt(scanner.nextLine());
+                        String codDisciplina = scanner.nextLine();
                         System.out.println(curriculo.mostrarPreRequisitos(codDisciplina));
                         break;
                     case 6:
                         System.out.print("Digite o código da disciplina: ");
-                        int codigoBusca = Integer.parseInt(scanner.nextLine());
-                        System.out.println(curriculo.buscarDisciplina(codigoBusca));
+                        String codBusca = scanner.nextLine();
+                        System.out.println(curriculo.buscarDisciplina(codBusca));
                         break;
                     case 0:
                         System.out.println("Saindo...");
