@@ -105,6 +105,7 @@ public class GradeCurricularTest {
 
     @Test
     void testRemoverDisciplinaInexistenteLancaExcecao() {
+        // Teste de exceção após tentativa de remoção de disciplina inexistente
         DisciplineNotFoundException thrown = assertThrows(
             DisciplineNotFoundException.class,
             () -> grade.removerDisciplina("INEXISTENTE"),
