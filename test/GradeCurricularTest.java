@@ -59,6 +59,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa a busca por uma disciplina existente na grade curricular.
+     * Verifica se a disciplina encontrada corresponde aos dados esperados.
+     */
     @Test
     void testBuscarDisciplinaExistente(){
         //Cria as disciplinas
@@ -78,6 +82,10 @@ public class GradeCurricularTest {
         assertEquals("Estrutura de Dados I", disciplinaEncontrada.getNome(), "O nome da disciplina encontrada deve ser 'Estrutura de Dados I'.");
     }
 
+    /**
+     * Testa se o método {@code buscarDisciplina} lança uma {@link DisciplineNotFoundException}
+     * quando tenta buscar uma disciplina que não existe na grade curricular.
+     */
     @Test
     void testBuscarDisciplinaInexistente(){
         //Criando as disciplinas
@@ -106,6 +114,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa a remoção bem-sucedida de uma disciplina da grade curricular.
+     * Verifica se a disciplina não está mais presente e se a mensagem de sucesso é retornada.
+     */
     @Test
     void testRemoverDisciplinaComSucesso() {
         // Inserindo disciplina
@@ -117,6 +129,10 @@ public class GradeCurricularTest {
         assertTrue(resultado.contains("Disciplina removida com sucesso"), "Mensagem de sucesso esperada.");
     }
 
+    /**
+     * Testa se o método {@code removerDisciplina} lança uma {@link RootRemovalException}
+     * ao tentar remover a disciplina raiz da grade curricular.
+     */
     @Test
     void testRemoverRaizLancaExcecao() {
         // Teste de exceção após tentativa de remoção da raíz
@@ -127,6 +143,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa se o método {@code removerDisciplina} lança uma {@link DisciplineNotFoundException}
+     * ao tentar remover uma disciplina que não existe na grade curricular.
+     */
     @Test
     void testRemoverDisciplinaInexistenteLancaExcecao() {
         // Teste de exceção após tentativa de remoção de disciplina inexistente
@@ -137,6 +157,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa a visualização da árvore de disciplinas com múltiplos níveis,
+     * verificando se a saída formatada corresponde ao esperado.
+     */
     @Test
     void testVisualizarArvoreComMultiplosNiveis(){
         //Criando as disciplinas
@@ -172,6 +196,10 @@ public class GradeCurricularTest {
         assertEquals(saidaEsperada, stringArvore, "A visualização da árvore não corresponde ao formato esperado.");
     }
 
+    /**
+     * Testa a busca por um {@link Nodo} existente que representa a disciplina raiz.
+     * Verifica se o nó encontrado e seus dados correspondem à raiz esperada.
+     */
     @Test
     void testBuscarNodoExistenteNaRaiz() {
         //Busca a disciplina raiz
@@ -184,6 +212,10 @@ public class GradeCurricularTest {
                      "O nome do dado no nó encontrado deve ser 'Bacharelado em Sistemas de Informação'.");
     }
 
+    /**
+     * Testa a busca por um {@link Nodo} de uma disciplina existente que não é a raiz.
+     * Garante que a busca em profundidade funciona corretamente.
+     */
     @Test
     void testBuscarNodoExistenteNaoRaiz() {
         //Cria as disciplinas
@@ -215,6 +247,11 @@ public class GradeCurricularTest {
                      "O nome do dado no nó BD001 deve ser 'Banco de Dados'.");
     }
     
+    /**
+     * Testa se o método {@code buscarDisciplina} (o método que usa {@code buscarNodo} internamente)
+     * lança uma {@link DisciplineNotFoundException} ao buscar uma disciplina inexistente.
+     * Este teste valida a exceção lançada ao buscar por uma disciplina que não está na árvore.
+     */
     @Test
     void testBuscarNodoInexistente() {
         //Cria as disciplinas
