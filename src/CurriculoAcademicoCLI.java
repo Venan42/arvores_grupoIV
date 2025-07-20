@@ -59,7 +59,9 @@ public class CurriculoAcademicoCLI {
                         break;
 
                     case 5:
-                        System.out.println(MostrarpreRequisitos());
+                        System.out.print("Digite o código da disciplina: ");
+                        int codDisciplina = Integer.parseInt(scanner.nextLine());
+                        System.out.println(curriculo.mostrarPreRequisitos(codDisciplina));
                         break;
                     case 6:
                         System.out.print("Digite o código da disciplina: ");

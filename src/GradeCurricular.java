@@ -56,6 +56,26 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
+    public String mostrarPreRequisitos(int codigo) {
+        Nodo<T> nodo = buscarNodo(codigo);
+        if (nodo == null) {
+            throw new DisciplineNotFoundException(codigo);
+        }
+        if (nodo.getGenitor() == null || nodo.getGenitor() == raiz) {
+            return "Essa disciplina não possui um Pré-Requisito.";
+        }
+        StringBuilder sb = new StringBuilder(((Disciplina) nodo.getDado()).getNome());
+        Nodo<T> nodoAtual = nodo.getGenitor();
+        while (nodoAtual != null && nodoAtual != raiz) {
+            Disciplina disciplinaPai = (Disciplina) nodoAtual.getDado();
+            sb.insert(0, disciplinaPai.getNome() + " --> ");
+            nodoAtual = nodoAtual.getGenitor();
+        }
+
+        return sb.toString();
+    }
+
+    @Override
     public Nodo<T> buscarNodo(int codigo) {
         return buscarNodoRec(codigo, raiz);
     }
