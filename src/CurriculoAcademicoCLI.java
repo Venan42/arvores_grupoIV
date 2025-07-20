@@ -6,8 +6,12 @@ import java.util.Scanner;
 
 public class CurriculoAcademicoCLI {
     public static void main(String[] args) {
-        GradeCurricular<Disciplina> curriculo = new GradeCurricular<>();
         Scanner scanner = new Scanner(System.in);
+        System.out.print("Qual o nome do curso da grade curricular? ");
+        String nomeCurso = scanner.nextLine();
+        System.out.print("Qual a sigla do curso da grade curricular? ");
+        String sigla = scanner.nextLine();
+        GradeCurricular<Disciplina> curriculo = new GradeCurricular<>(sigla, nomeCurso);
 
         int opcao = 0;
 
