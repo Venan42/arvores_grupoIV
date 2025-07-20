@@ -37,11 +37,11 @@ public class GradeCurricularTest {
 
         //Estrutura de saída esperada
         String saidaEsperada = 
-            "📁 [BSI] Bacharelado em Sistemas de Informação\n" +
-            "├── 📁 [LP001] Lógica de Programação\n" +
-            "│   ├── 📁 [ES001] Estrutura de Dados\n" + // ES001 é filho de LP001
-            "├── 📁 [POO001] Programação Orientada a Objetos\n" +
-            "│   ├── 📁 [BD001] Banco de Dados\n";
+            "[BSI] Bacharelado em Sistemas de Informação\n" +
+            "├── [LP001] Lógica de Programação\n" +
+            "│   ├── [ES001] Estrutura de Dados\n" + // ES001 é filho de LP001
+            "├── [POO001] Programação Orientada a Objetos\n" +
+            "│   ├── [BD001] Banco de Dados\n";
 
         //Comparando a impressão com a saida esperada
         assertEquals(saidaEsperada, stringArvore, "A visualização da árvore não corresponde ao formato esperado.");
