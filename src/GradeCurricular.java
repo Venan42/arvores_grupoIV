@@ -28,7 +28,7 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         Nodo<T> nodo = buscarNodoRec(codigo, raiz);
         if(nodo == null)
             throw new DisciplineNotFoundException("Disciplina não encontrada.");
-        return (Disciplina) nodo.getDado();
+        return nodo.getDado();
     }
 
     @Override
