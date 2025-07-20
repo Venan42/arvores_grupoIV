@@ -83,6 +83,33 @@ public class GradeCurricularTest {
     }
 
     @Test
+    void testRemoverDisciplinaComSucesso() {
+        Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
+        grade.inserirDisciplina(d1);
+        String resultado = grade.removerDisciplina("ED001");
+        assertFalse(grade.contemDisciplina("ED001"), "A disciplina ED001 deve ter sido removida.");
+        assertTrue(resultado.contains("Disciplina removida com sucesso"), "Mensagem de sucesso esperada.");
+    }
+
+    @Test
+    void testRemoverRaizLancaExcecao() {
+        RootRemovalException thrown = assertThrows(
+            RootRemovalException.class,
+            () -> grade.removerDisciplina("BSI"),
+            "Deve lançar RootRemovalException ao tentar remover a raiz."
+        );
+    }
+
+    @Test
+    void testRemoverDisciplinaInexistenteLancaExcecao() {
+        DisciplineNotFoundException thrown = assertThrows(
+            DisciplineNotFoundException.class,
+            () -> grade.removerDisciplina("INEXISTENTE"),
+            "Deve lançar DisciplineNotFoundException para disciplina inexistente."
+        );
+    }
+
+    @Test
     void testVisualizarArvoreComMultiplosNiveis(){
         //Criando as disciplinas
         Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
