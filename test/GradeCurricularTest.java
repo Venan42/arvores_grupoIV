@@ -15,6 +15,27 @@ public class GradeCurricularTest {
     }
 
     @Test
+    void testInserirDisciplina() {
+        // Inserindo disciplina
+        Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
+        grade.inserirDisciplina(d1);
+        assertTrue(grade.contemDisciplina("ED001"), "A disciplina ED001 deve estar presente na grade.");
+    }
+
+    @Test
+    void testInserirDisciplinaDuplicadaLancaExcecao() {
+        // Inserindo disciplina
+        Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
+        grade.inserirDisciplina(d1);
+        // Testando inserção de disciplina duplicada
+        IllegalArgumentException thrown = assertThrows(
+                IllegalArgumentException.class, () -> grade.inserirDisciplina(new Disciplina(
+                        "ED001", "Estrutura de Dados I", 4)), "Deve lançar " +
+                        "IllegalArgumentException para disciplinas duplicadas."
+        );
+    }
+
+    @Test
     void testBuscarDisciplinaExistente(){
         //Cria as disciplinas
         Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
