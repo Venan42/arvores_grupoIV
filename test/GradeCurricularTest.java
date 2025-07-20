@@ -95,6 +95,7 @@ public class GradeCurricularTest {
 
     @Test
     void testRemoverRaizLancaExcecao() {
+        // Teste de exceção após tentativa de remoção da raíz
         RootRemovalException thrown = assertThrows(
             RootRemovalException.class,
             () -> grade.removerDisciplina("BSI"),
