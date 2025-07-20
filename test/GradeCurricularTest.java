@@ -158,8 +158,8 @@ public class GradeCurricularTest {
     }
 
     /**
-     * Testa a visualização da árvore de disciplinas com múltiplos níveis,
-     * verificando se a saída formatada corresponde ao esperado.
+     * Testa se o método {@code removerDisciplina} lança uma {@link DisciplineWithoutParentException}
+     * ao tentar remover uma disciplina que não possui pai (genitor).
      */
     @Test
     void testRemoverDisciplinaSemPaiLancaExcecao() {
@@ -178,6 +178,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa a remoção de uma disciplina que possui filhos,
+     * verificando se toda a subárvore (disciplina e descendentes) é removida corretamente.
+     */
     @Test
     void testRemoverDisciplinaComFilhosRemoveSubarvore() {
         // Inserindo as disciplinas
@@ -200,6 +204,30 @@ public class GradeCurricularTest {
         assertTrue(resultado.contains("Estrutura de Dados"), "A subárvore removida deve ser exibida.");
     }
 
+    /**
+     * Testa o método {@code contemDisciplina} para verificar se identifica corretamente
+     * a presença ou ausência de disciplinas na grade curricular.
+     */
+    @Test
+    void testContemDisciplina() {
+        // Insere disciplinas na grade
+        Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
+        Disciplina bd = new Disciplina("BD001", "Banco de Dados", 4);
+        grade.inserirDisciplina(lp);
+        grade.inserirDisciplina(bd);
+
+        // Verifica disciplinas existentes
+        assertTrue(grade.contemDisciplina("LP001"), "A grade deve conter a disciplina LP001.");
+        assertTrue(grade.contemDisciplina("BD001"), "A grade deve conter a disciplina BD001.");
+
+        // Verifica disciplina inexistente
+        assertFalse(grade.contemDisciplina("ES001"), "A grade não deve conter a disciplina ES001.");
+    }
+
+    /**
+     * Testa a visualização da árvore de disciplinas com múltiplos níveis,
+     * garantindo que a saída formatada está correta.
+     */
     @Test
     void testVisualizarArvoreComMultiplosNiveis(){
         //Criando as disciplinas
@@ -286,6 +314,10 @@ public class GradeCurricularTest {
                      "O nome do dado no nó BD001 deve ser 'Banco de Dados'.");
     }
 
+    /**
+     * Testa se o método {@code vincularPreRequisito} lança uma {@link DisciplineNotFoundException}
+     * ao tentar vincular um pré-requisito cujo pai não existe.
+     */
     @Test
     void testVincularPreRequisitoPaiInexistenteLancaExcecao() {
         Disciplina filho = new Disciplina("ED001", "Estrutura de Dados", 4);
@@ -297,6 +329,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa se o método {@code vincularPreRequisito} lança uma {@link DisciplineNotFoundException}
+     * ao tentar vincular um pré-requisito cujo filho não existe.
+     */
     @Test
     void testVincularPreRequisitoFilhoInexistenteLancaExcecao() {
         Disciplina pai = new Disciplina("LP001", "Lógica de Programação", 4);
@@ -308,6 +344,10 @@ public class GradeCurricularTest {
         );
     }
 
+    /**
+     * Testa se o método {@code vincularPreRequisito} impede a criação de ciclos na árvore,
+     * retornando {@code false} ao tentar criar um ciclo.
+     */
     @Test
     void testVincularPreRequisitoCriaCicloRetornaFalse() {
         Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
@@ -320,6 +360,10 @@ public class GradeCurricularTest {
         assertFalse(resultado, "Não deve permitir criar ciclo na árvore.");
     }
 
+    /**
+     * Testa se o método {@code vincularPreRequisito} permite a mudança de genitor (pai)
+     * de uma disciplina já existente na árvore.
+     */
     @Test
     void testVincularPreRequisitoMudaGenitorCorretamente() {
         Disciplina lp = new Disciplina("LP001", "Lógica de Programação", 4);
