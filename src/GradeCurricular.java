@@ -22,7 +22,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public Disciplina buscarDisciplina(int codigo) {
+    public Disciplina buscarDisciplina(String codigo) {
         Nodo<T> nodo = buscarNodoRec(codigo, raiz);
         if(nodo == null)
             throw new DisciplineNotFoundException("Disciplina não encontrada.");
@@ -30,8 +30,8 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public String removerDisciplina(int codigo) {
-        if (((Disciplina) raiz.getDado()).getCodigo() == codigo) {
+    public String removerDisciplina(String codigo) {
+        if (((Disciplina) raiz.getDado()).getCodigo().equals(codigo)) {
             throw new RootRemovalException();
         }
         Nodo<T> alvo = buscarNodo(codigo);
@@ -56,7 +56,7 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public String mostrarPreRequisitos(int codigo) {
+    public String mostrarPreRequisitos(String codigo) {
         Nodo<T> nodo = buscarNodo(codigo);
         if (nodo == null) {
             throw new DisciplineNotFoundException(codigo);
@@ -76,35 +76,17 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public Nodo<T> buscarNodo(int codigo) {
+    public Nodo<T> buscarNodo(String codigo) {
         return buscarNodoRec(codigo, raiz);
     }
 
-    private Nodo<T> buscarNodoRec(int codigo, Nodo<T> nodo) {
+    private Nodo<T> buscarNodoRec(String codigo, Nodo<T> nodo) {
         if(nodo == null)
             return null;
         if (codigo == ((Disciplina) nodo.getDado()).getCodigo())
             return nodo;
         for(Nodo<T> filho : nodo.getFilhos()){
             Nodo<T> aux = buscarNodoRec(codigo, filho);
-            if(aux != null)
-                return aux;
-        }
-        return null;
-    }
-
-    @Override
-    public Nodo<T> buscarNodo(String nome) {
-        return buscarNodoRec(nome, raiz);
-    }
-
-    private Nodo<T> buscarNodoRec(String nome, Nodo<T> nodo) {
-        if(nodo == null)
-            return null;
-        if (nome.trim().equalsIgnoreCase(((Disciplina)nodo.getDado()).getNome()))
-            return nodo;
-        for(Nodo<T> filho : nodo.getFilhos()){
-            Nodo<T> aux = buscarNodoRec(nome, filho);
             if(aux != null)
                 return aux;
         }
@@ -141,12 +123,12 @@ public class GradeCurricular<T> implements Arborizavel<T>{
     }
 
     @Override
-    public boolean contemDisciplina(int codigo) {
+    public boolean contemDisciplina(String codigo) {
         return contemDisciplinaRec(codigo, raiz);
     }
 
-    private boolean contemDisciplinaRec(int codigo, Nodo<T> nodo) {
-        if (nodo.getDado() != null && codigo == ((Disciplina) nodo.getDado()).getCodigo()) {
+    private boolean contemDisciplinaRec(String codigo, Nodo<T> nodo) {
+        if (nodo.getDado() != null && ((Disciplina) nodo.getDado()).getCodigo().equalsIgnoreCase(codigo)) {
             return true;
         }
         for (Nodo<T> filho : nodo.getFilhos()) {
