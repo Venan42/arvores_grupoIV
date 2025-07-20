@@ -84,8 +84,10 @@ public class GradeCurricularTest {
 
     @Test
     void testRemoverDisciplinaComSucesso() {
+        // Inserindo disciplina
         Disciplina d1 = new Disciplina("ED001", "Estrutura de Dados I", 4);
         grade.inserirDisciplina(d1);
+        // Teste de Remoção da disciplina
         String resultado = grade.removerDisciplina("ED001");
         assertFalse(grade.contemDisciplina("ED001"), "A disciplina ED001 deve ter sido removida.");
         assertTrue(resultado.contains("Disciplina removida com sucesso"), "Mensagem de sucesso esperada.");
