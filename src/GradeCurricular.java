@@ -4,14 +4,37 @@ import exception.RootRemovalException;
 
 import java.util.List;
 
+/**
+ * Código referente a implementação de um Currículo
+ * Acadêmico com Pré-requisitos utilizando Árvores N-ária.
+ * 
+ * @author Gabryelle Beatriz Duarte Moraes
+ * @author Vinícius Nunes de Andrade
+ * @author Maria Eduarda Santos Campos
+ * @author Kaique Silva Souza
+ * @version 2.0
+ * @since 2025-07-11
+ */
 public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
     private Nodo<T> raiz;
 
+    /**
+     * Construtor.
+     * 
+     * @param sigla     A sigla do curso referente ao currículo acadêmico.
+     * @param nomeCurso O nome do curso referente ao currículo acadêmico.
+     */
     public GradeCurricular(String sigla, String nomeCurso){
         Disciplina curso= new Disciplina(sigla, nomeCurso, 0);
         raiz = new Nodo<>((T)curso);
     }
 
+    /**
+     * Insere uma disciplina na raiz da árvore/no curso.
+     * 
+     * @param nova A disciplina a ser inserida.
+     * @throws IllegalArgumentException Se a disciplina já foi inserida.
+     */
     @Override
     public void inserirDisciplina(T nova) {
         if (buscarNodo(nova.getCodigo()) != null) {
@@ -23,14 +46,34 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         raiz.addFilho(novo);
     }
 
+    /**
+     * Busca uma disciplina pelo seu código.
+     * 
+     * @param codigo O código da disciplina.
+     * @return A disciplina encontrada.
+     * @throws DisciplineNotFoundException Se nenhuma disciplina foi
+     *                                     encontrada.
+     */
     @Override
     public Disciplina buscarDisciplina(String codigo) {
         Nodo<T> nodo = buscarNodoRec(codigo, raiz);
         if(nodo == null)
-            throw new DisciplineNotFoundException("Disciplina não encontrada.");
+            throw new DisciplineNotFoundException(codigo);
         return nodo.getDado();
     }
 
+    /**
+     * Remove uma disciplina pelo seu código.
+     * 
+     * @param codigo O código da disciplina.
+     * @return Uma mensagem de controle com o status da remoção.
+     * @throws RootRemovalException Se houver tentativa de remover a raiz.
+     * @throws DisciplineNotFoundException      Se nenhuma disciplina foi
+     *                                          encontrada.
+     * @throws DisciplineWithoutParentException Se a disciplina não possui
+     *                                          referência ao seu genitor.
+     * @throws RuntimeException                 Se a remoção falhar.
+     */
     @Override
     public String removerDisciplina(String codigo) {
         if ((raiz.getDado()).getCodigo().equals(codigo)) {
@@ -57,6 +100,31 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
 
     }
 
+    /**
+     * Remove um nodo e todos os seus filhos do currículo.
+     * 
+     * @param atual Nodo a ser removido.
+     * @param pai Genitor do nodo a ser removido.
+     * @return Nodo removido.
+     */
+    @Override
+    public Nodo<T> removerNodo(Nodo<T> atual, Nodo<T> pai) {
+        boolean removido = pai.getFilhos().remove(atual);
+        if (removido) {
+            atual.setGenitor(null);
+            return atual;
+        }
+        return null;
+    }
+
+    /**
+     * Mostra os pré-requsitos de uma disciplina pelo seu código.
+     * 
+     * @param codigo O código da disciplina.
+     * @return Uma String com o caminho de pré-requisitos encontrados.
+     * @throws DisciplineNotFoundException Se nenhuma disciplina foi
+     *                                     encontrada.
+     */
     @Override
     public String mostrarPreRequisitos(String codigo) {
         Nodo<T> nodo = buscarNodo(codigo);
@@ -77,11 +145,24 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         return sb.toString();
     }
 
+    /**
+     * Busca um nodo pelo seu código.
+     * 
+     * @param codigo O código da disciplina.
+     * @return O nodo encontrado.
+     */
     @Override
     public Nodo<T> buscarNodo(String codigo) {
         return buscarNodoRec(codigo, raiz);
     }
 
+    /**
+     * Busca um nodo de forma recursiva.
+     * 
+     * @param codigo O código da disciplina.
+     * @param nodo A raiz da árvore.
+     * @return O nodo encontrado.
+     */
     private Nodo<T> buscarNodoRec(String codigo, Nodo<T> nodo) {
         if(nodo == null)
             return null;
@@ -95,6 +176,13 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         return null;
     }
 
+    /**
+     * Exibe a árvore a partir de um determinado nível.
+     * 
+     * @param atual Nodo inicial da visualização.
+     * @param nivel Nivel da visualização.
+     * @return String com a visualização da sub-árvore.
+     */
     @Override
     public String exibirArvore(Nodo<T> atual, int nivel) {
         if (atual == null || atual.getDado() == null) {
@@ -122,6 +210,11 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         return sb.toString();
     }
 
+    /**
+     * Exibe a árvore completa.
+     * 
+     * @return String com a visualização da sub-árvore.
+     */
     @Override
     public String visualizarArvore() {
         StringBuilder sb = new StringBuilder();
@@ -129,11 +222,24 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         return sb.toString();
     }
 
+    /**
+     * Verifica se uma disciplina está no currículo.
+     * 
+     * @param codigo O código da disciplina.
+     * @return Se a disciplina foi encontrada ou não (true ou false).
+     */
     @Override
     public boolean contemDisciplina(String codigo) {
         return contemDisciplinaRec(codigo, raiz);
     }
 
+    /**
+     * Verifica se uma disciplina está no currículo de forma recursiva.
+     * 
+     * @param codigo O código da disciplina.
+     * @param nodo   A raiz da árvore.
+     * @return Se a disciplina foi encontrada ou não (true ou false).
+     */
     private boolean contemDisciplinaRec(String codigo, Nodo<T> nodo) {
         if (nodo.getDado() != null && (nodo.getDado()).getCodigo().equalsIgnoreCase(codigo)) {
             return true;
@@ -146,16 +252,15 @@ public class GradeCurricular<T extends Disciplina> implements Arborizavel<T>{
         return false;
     }
 
-    @Override
-    public Nodo<T> removerNodo(Nodo<T> atual, Nodo<T> pai) {
-        boolean removido = pai.getFilhos().remove(atual);
-        if (removido) {
-            atual.setGenitor(null);
-            return atual;
-        }
-        return null;
-    }
-
+    /**
+     * Vincula um pré-requisito para determinada disciplina.
+     * 
+     * @param codigoPai   Pré-requisito a ser vinculado.
+     * @param codigoFilho Dependente a ser vinculado.
+     * @return Boolean indicando se a vinculação foi bem sucedida.
+     * @throws DisciplineNotFoundException Se a disciplina não foi
+     *                                     encontrada.
+     */
     @Override
     public boolean vincularPreRequisito(String codigoPai, String codigoFilho) {
         Nodo<T> pai = buscarNodo(codigoPai);
